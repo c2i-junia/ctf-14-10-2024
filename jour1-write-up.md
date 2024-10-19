@@ -6,7 +6,7 @@ on commençe par analysé les ports ouverts :
 
 nmap 10.10.115.42 
 
-![alt text](1-nmap.png)
+![alt text](./img/1-nmap.png)
 
 on voit q'il ya nottament le port 80 (Service http de disponible)
 
@@ -15,27 +15,27 @@ on allant sur la page
 http://10.10.115.42/
 
 on tombe sur la page d'acceuil
-![alt text](2-page_accueil.png)
+![alt text](./img/2-page_accueil.png)
 
 on voit que la photo est clickable 
-![alt text](<3-en clickant sur l'image d'accueil.png>)
+![alt text](<./img/3-en clickant sur l'image d'accueil.png>)
 
 Rien d'intéressant
 
 on annalyse le site pour voir les pages disponibles on en a plusieurs
-![alt text](<5-acces page admin wordpress.png>)
+![alt text](<./img/5-acces page admin wordpress.png>)
 
  wordpress/wp-login.php 
 
  et on test des logins connu admin:admin 
 
- ![alt text](<6-page accueil wrdpress.png>)
+ ![alt text](<./img/6-page accueil wrdpress.png>)
 
  Bingo!
 
  on va aller sur Apearence/Editor
 
- ![alt text](<7-chemin vers 404.png>)
+ ![alt text](<./img/7-chemin vers 404.png>)
 
  puis on remplace le 404 template par un reverse shell
 
@@ -232,44 +232,44 @@ function printit ($string) {
 
 "N'oubliez pas de changer le port et de mettre votre IP"
 
-![alt text](<8-choix de 404.png>)
+![alt text](<./img/8-choix de 404.png>)
 
 puis on valide
 
-![alt text](<9-mise de reverseshell.png>)
+![alt text](<./img/9-mise de reverseshell.png>)
 
 parfait ça marche
 
 on met le port en écoute
 
-![alt text](<10-port sous écoute.png>)
+![alt text](<./img/10-port sous écoute.png>)
 
 puis on lance la page ou l'on a mis le reverse shell
 
 /wp-content/themes/twentyfourteen/404.php
 
-![alt text](<11-bingo got reverse shell.png>)
+![alt text](<./img/11-bingo got reverse shell.png>)
 
 Siuuu ! on a un reverse shell
 
 on va à home/wpadmin et on retrouve le user flag
 
-![alt text](<12-User flag.png>)
+![alt text](<./img/12-User flag.png>)
 
 on va aller voir wp-config.php pour potentiellement avoir des infos critique
 
-![alt text](<13-root login infos.png>)
+![alt text](<./img/13-root login infos.png>)
 
 wow c'est marqué en grand on a les logins infos root
 
 on va se connecter en tant que root
 
-![alt text](<14-accées en tant que root.png>)
+![alt text](<./img/14-accées en tant que root.png>)
 
 let's goo on est root
 
 il ne reste plus qu'à prendre le root flag
 
-![alt text](<15-root flag.png>)
+![alt text](<./img/15-root flag.png>)
 
 et voila !!
