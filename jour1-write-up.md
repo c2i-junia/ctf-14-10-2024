@@ -23,13 +23,13 @@ on voit que la photo est clickable
 Rien d'intéressant
 
 on annalyse le site pour voir les pages disponibles on en a plusieurs
-![alt text](<./imgs/5-acces page admin wordpress.png>)
+![alt text](<./imgs/4-dirsearch.png>)
 
  wordpress/wp-login.php 
 
  et on test des logins connu admin:admin 
 
- ![alt text](<./imgs/6-page accueil wrdpress.png>)
+ ![alt text](<./imgs/5-acces page admin wordpress.png>)
 
  Bingo!
 
