@@ -6,7 +6,7 @@ on commençe par analysé les ports ouverts :
 
 nmap 10.10.115.42 
 
-![alt text](./imgs/1-nmap.png)
+![alt text](./imgs/j1/1-nmap.png)
 
 on voit q'il ya nottament le port 80 (Service http de disponible)
 
@@ -15,27 +15,27 @@ on allant sur la page
 http://10.10.115.42/
 
 on tombe sur la page d'acceuil
-![alt text](./imgs/2-page_accueil.png)
+![alt text](./imgs/j1/2-page_accueil.png)
 
 on voit que la photo est clickable 
-![alt text](<./imgs/3-en clickant sur l'image d'accueil.png>)
+![alt text](<./imgs/j1/3-en clickant sur l'image d'accueil.png>)
 
 Rien d'intéressant
 
 on annalyse le site pour voir les pages disponibles on en a plusieurs
-![alt text](<./imgs/4-dirsearch.png>)
+![alt text](<./imgs/j1/4-dirsearch.png>)
 
  wordpress/wp-login.php 
 
  et on test des logins connu admin:admin 
 
- ![alt text](<./imgs/5-acces page admin wordpress.png>)
+ ![alt text](<./imgs/j1/5-acces page admin wordpress.png>)
 
  Bingo!
 
  on va aller sur Apearence/Editor
 
- ![alt text](<./imgs/7-chemin vers 404.png>)
+ ![alt text](<./imgs/j1/7-chemin vers 404.png>)
 
  puis on remplace le 404 template par un reverse shell
 
@@ -232,44 +232,44 @@ function printit ($string) {
 
 "N'oubliez pas de changer le port et de mettre votre IP"
 
-![alt text](<./imgs/8-choix de 404.png>)
+![alt text](<./imgs/j1/8-choix de 404.png>)
 
 puis on valide
 
-![alt text](<./imgs/9-mise de reverseshell.png>)
+![alt text](<./imgs/j1/9-mise de reverseshell.png>)
 
 parfait ça marche
 
 on met le port en écoute
 
-![alt text](<./imgs/10-port sous écoute.png>)
+![alt text](<./imgs/j1/10-port sous écoute.png>)
 
 puis on lance la page ou l'on a mis le reverse shell
 
 /wp-content/themes/twentyfourteen/404.php
 
-![alt text](<./imgs/11-bingo got reverse shell.png>)
+![alt text](<./imgs/j1/11-bingo got reverse shell.png>)
 
 Siuuu ! on a un reverse shell
 
 on va à home/wpadmin et on retrouve le user flag
 
-![alt text](<./imgs/12-User flag.png>)
+![alt text](<./imgs/j1/12-User flag.png>)
 
 on va aller voir wp-config.php pour potentiellement avoir des infos critique
 
-![alt text](<./imgs/13-root login infos.png>)
+![alt text](<./imgs/j1/13-root login infos.png>)
 
 wow c'est marqué en grand on a les logins infos root
 
 on va se connecter en tant que root
 
-![alt text](<./imgs/14-accées en tant que root.png>)
+![alt text](<./imgs/j1/14-accées en tant que root.png>)
 
 let's goo on est root
 
 il ne reste plus qu'à prendre le root flag
 
-![alt text](<./imgs/15-root flag.png>)
+![alt text](<./imgs/j1/15-root flag.png>)
 
 et voila !!
