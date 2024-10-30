@@ -1,0 +1,4 @@
+Objectif: Obtenir un accès root sur la machine
+
+Question 1: Quel est le troisième mot dans le fichier /root/Flag.txt ?
+Answer: only

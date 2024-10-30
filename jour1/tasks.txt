@@ -1,0 +1,27 @@
+Objectif: Obtenir un accès root sur la machine
+
+Question 1: Quel service fonctionne sur le port 80 ?
+Answer: HTTP
+Hint: C'est le port par défaut utilisé pour le trafic web non sécurisé.
+
+Question 2: Quel fichier révèle des informations cachées sur un site web ? 
+Answer: robots.txt
+Hint: Les moteurs de recherche consultent souvent ce fichier pour savoir quels chemins ne pas indexer.
+
+Question 3: Quel CMS avez-vous trouvé sur le site ?
+Answer: WordPress
+Hint: C'est l'un des systèmes de gestion de contenu (CMS) les plus populaires pour les blogs.
+
+Question 4: Quel est le couple identifiant/mot de passe utilisé pour accéder à WordPress ?
+Answer: admin
+Hint: Essayez les identifiants par défaut souvent utilisés.
+
+Question 5: Dans quel fichier trouve-t-on les identifiants de la base de données MySQL ?
+Answer: wp-config.php
+Hint: C'est un fichier de configuration critique dans chaque installation WordPress.
+
+Question 6: Quel est le user flag ? ( /home/wpadmin/flag.txt )
+Answer: 2bafe61f03117ac66a73c3c514de796e
+
+Question 7: Quel est le root flag ? ( /root/flag.txt ) 
+Answer: 8e3f9ec016e3598c5eec11fd3d73f6fb

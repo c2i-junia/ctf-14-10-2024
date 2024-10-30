@@ -1,0 +1,19 @@
+Objectif: Votre objectif est de récupérer tous les flags et d’obtenir l’accès root. Chaque flag contient un indice pour trouver le suivant.
+
+Question 1: Quel est le flag 1 ?
+Answer: flag1{YWxsdGhlZmlsZXM=}
+
+Question 2: Quel est le flag 2 ?
+Answer: flag2{aW1mYWRtaW5pc3RyYXRvcg==}
+
+Question 3: Quel est le flag 3 ?
+Answer: flag3{Y29udGludWVUT2Ntcw==}
+
+Question 4: Quel est le flag 4 ?
+Answer: flag4{dXBsb2Fkcjk0Mi5waHA=}
+
+Question 5: Quel est le flag 5 ?
+Answer: flag5{YWdlbnRzZXJ2aWNlcw==}
+
+Question 6: Quel est le flag 6 ?
+Answer: flag6{R2gwc3RQcm90MGMwbHM=}

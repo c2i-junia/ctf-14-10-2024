@@ -1,0 +1,16 @@
+Objectif: Obtenir un accès root sur la machine
+
+Question 1: Quel service web est actif sur le port 8008 ?
+Answer: Apache
+Hint: Serveur web utilisé pour héberger des sites.
+
+Question 2: Quel est le chemin vers la page de "Vuln Bank" ?
+Answer: /unisxcudkqjydw/vulnbank
+Hint: Il s'agit d'un répertoire caché qui redirige vers une application web.
+
+Question 3: Maintenant que vous avez trouvé un moyen d'avoir un shell, quel fichier du système est modifiable et permet l'élévation de privilèges ?
+Answer: /etc/passwd
+Hint: Fichier critique qui gère les utilisateurs du système.
+
+Question 4: Quel est le root flag ( /root/flag.txt )? 
+Answer: d5ed38fdbf28bc4e58be142cf5a17cf5
